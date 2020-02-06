@@ -1,75 +1,71 @@
 package com.fizzbuzz;
 
+import static com.fizzbuzz.SpecialNumType.Num3Type;
+import static com.fizzbuzz.SpecialNumType.Num5Type;
+import static com.fizzbuzz.SpecialNumType.Num7Type;
+
 public class NumConverter {
 
-  private final String for3 = "Fizz";
-  private final String for5 = "Buzz";
-  private final String for7 = "Whizz";
-
-  public static void main(String[] args) {
-
-    NumConverter converter = new NumConverter();
-
-    for (int i = 1; i < 1000; i++) {
-      System.out.println(converter.convert(i));
-    }
-  }
-
   public String convert(int number) {
-    StringBuffer result = new StringBuffer();
-    if (contain(number, 7)) {
-      if (contain(number, 3)) {
-        result.append(for3);
-      } else {
-        result = divide37(number);
-      }
-    } else if (contain(number, 5)) {
-      result = divide57(number);
-    } else if (contain(number, 3)) {
-      result.append(for3);
-    } else {
-      if (number % 3 == 0) {
-        result.append(for3);
-      }
-      if (number % 5 == 0) {
-        result.append(for5);
-      }
-      if (number % 7 == 0) {
-        result.append(for7);
-      }
+
+    StringBuffer result = applyRule7(number);
+    if (result.length() == 0) {
+      result = applyRule6(number);
     }
     if (result.length() == 0) {
-      result.append(number);
+      result = applyRule5(number);
+    }
+    if (result.length() == 0) {
+      result = applyBaseRule(number, null);
     }
     return result.toString();
   }
 
-  private boolean contain(int number, int specialNum) {
-    return String.valueOf(number).contains(String.valueOf(specialNum));
+  private StringBuffer applyBaseRule(int number, SpecialNumType skipType) {
+
+    SpecialNumType[] allType = SpecialNumType.values();
+    StringBuffer sb = new StringBuffer();
+    for (int i = 0; i < allType.length; i++) {
+      if (allType[i] == skipType) {
+        continue;
+      }
+      if (allType[i].divideByNum(number)) {
+        sb.append(allType[i].getReplaceStr());
+      }
+    }
+    if (sb.length() == 0) {
+      sb.append(number);
+    }
+    return sb;
   }
 
-  private StringBuffer divide57(int number) {
+  private StringBuffer applyRule5(int number) {
 
-    StringBuffer result = new StringBuffer();
-    if (number % 5 == 0) {
-      result.append(for5);
+    StringBuffer sb = new StringBuffer();
+    if (Num3Type.containByNum(number)) {
+      sb.append(Num3Type.getReplaceStr());
     }
-    if (number % 7 == 0) {
-      result.append(for7);
-    }
-    return result;
+    return sb;
   }
 
-  private StringBuffer divide37(int number) {
+  private StringBuffer applyRule6(int number) {
 
-    StringBuffer result = new StringBuffer();
-    if (number % 3 == 0) {
-      result.append(for3);
+    StringBuffer sb = new StringBuffer();
+    if (Num5Type.containByNum(number)) {
+      sb = applyBaseRule(number, Num3Type);
     }
-    if (number % 7 == 0) {
-      result.append(for7);
-    }
-    return result;
+    return sb;
   }
 
+  private StringBuffer applyRule7(int number) {
+
+    StringBuffer sb = new StringBuffer();
+    if (Num7Type.containByNum(number)) {
+      sb = applyRule5(number);
+      if (sb.length() == 0) {
+        sb = applyBaseRule(number, Num5Type);
+      }
+    }
+    return sb;
+  }
 }
