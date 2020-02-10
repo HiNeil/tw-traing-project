@@ -12,7 +12,7 @@ public class ConverterTest {
 
     NumConverter numConverter = new NumConverter();
 
-    assertAll("convert 3,5,7",
+    assertAll("base rule should convert num divided by 3 5 and 7",
         () -> assertEquals("Fizz", numConverter.convert(3)),
         () -> assertEquals("Buzz", numConverter.convert(5)),
         () -> assertEquals("Whizz", numConverter.convert(7)),
@@ -25,11 +25,11 @@ public class ConverterTest {
         () -> assertEquals("BuzzWhizz", numConverter.convert(105))
     );
 
-    assertAll("contain 3",
+    assertAll("rule5 should convert num when contain 3",
         () -> assertEquals("Fizz", numConverter.convert(13)));
-    assertAll("contain 5",
+    assertAll("rule6 should convert num when contain 5",
         () -> assertEquals("BuzzWhizz", numConverter.convert(35)));
-    assertAll("contain 7",
+    assertAll("rule7 should convert num when contain 7",
         () -> assertEquals("Fizz", numConverter.convert(75)));
   }
 }
