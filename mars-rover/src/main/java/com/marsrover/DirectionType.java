@@ -11,6 +11,10 @@ public enum DirectionType {
     this.desc = desc;
   }
 
+  public String getDesc() {
+    return desc;
+  }
+
   public DirectionType getLeft() {
 
     DirectionType[] dirs = DirectionType.values();
@@ -34,5 +38,14 @@ public enum DirectionType {
       }
     }
     throw new RuntimeException("Can not get right for direction:" + this.name());
+  }
+
+  public static DirectionType getDir(String desc) {
+    for (DirectionType dir : DirectionType.values()) {
+      if (dir.getDesc().equals(desc)) {
+        return dir;
+      }
+    }
+    throw new RuntimeException("Can not get direction type from direction:" + desc);
   }
 }
